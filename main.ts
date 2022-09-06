@@ -40,7 +40,7 @@ ${eventEnd}`;
   }
 }
 
-type DateArray = [number, number, number, number, number, number?];
+type DateArray = number[];
 
 export interface EventConfig {
   title: string;
