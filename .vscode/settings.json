@@ -1,0 +1,12 @@
+{
+  "deno.enable": true,
+  "cSpell.words": [
+    "CALSCALE",
+    "DTEND",
+    "DTSTAMP",
+    "DTSTART",
+    "PRODID",
+    "VCALENDAR",
+    "VEVENT"
+  ]
+}
