@@ -50,7 +50,7 @@ export class Event {
       ['SUMMARY', title],
       ['DESCRIPTION', description],
       eventEnd,
-    ];
+    ].filter(line => line[1] !== undefined) as ContentLine[];
   }
 }
 
