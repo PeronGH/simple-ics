@@ -24,7 +24,7 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 function formatDate(
   args: number[] = [],
-  outputType = 'utc',
+  outputType = 'local',
   inputType = 'local'
 ) {
   if (Array.isArray(args) && args.length === 3) {
