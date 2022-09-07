@@ -10,7 +10,7 @@ Deno.test({
     };
     const evt = new Event(cfg);
 
-    console.log(evt.toString());
+    console.log(evt.toLines());
   },
 });
 
@@ -25,7 +25,7 @@ Deno.test({
     const evt = new Event(cfg);
     const calendar = new Calendar([evt]);
 
-    console.log(calendar.toString());
+    console.log(calendar.toLines());
   },
 });
 
