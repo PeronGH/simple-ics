@@ -7,7 +7,7 @@ import {
   Event,
   EventConfig,
   Calendar,
-} from 'https://deno.land/x/simple_ics@0.0.8/mod.ts';
+} from 'https://deno.land/x/simple_ics@0.0.10/mod.ts';
 
 const cfg1: EventConfig = {
   title: 'Write Typescript',
@@ -23,6 +23,10 @@ const cfg2: EventConfig = {
   rrule: {
     freq: 'DAILY',
     count: 3,
+  },
+  alarm: {
+    desc: 'Write Rust NOW',
+    advance: 30,
   },
 };
 

@@ -41,12 +41,16 @@ Deno.test({
     };
 
     const cfg2: EventConfig = {
-      title: 'Write Rust for next 3 days',
+      title: 'Write Rust for 3 days',
       beginDate: new Date(),
       duration: 3600, // Duration: 3600s, or 1h
       rrule: {
         freq: 'DAILY',
         count: 3,
+      },
+      alarm: {
+        desc: 'Write Rust NOW',
+        advance: 30,
       },
     };
 
