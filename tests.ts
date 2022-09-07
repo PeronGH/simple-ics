@@ -1,5 +1,4 @@
-import { Event, EventConfig, Calendar } from './main.ts';
-import parseDate from 'https://raw.githubusercontent.com/adamgibbons/ics/master/src/utils/format-date.js';
+import { Event, EventConfig, Calendar } from './mod.ts';
 
 Deno.test({
   name: 'event',
@@ -31,9 +30,25 @@ Deno.test({
 });
 
 Deno.test({
-  name: 'date',
+  name: 'doc',
   fn() {
-    const date = parseDate([2022, 10, 11, 5, 2]);
-    console.log(date);
+    const cfg1: EventConfig = {
+      title: 'Write typescript',
+      beginDate: [2022, 9, 6, 9, 30],
+      endDate: [2022, 9, 6, 10],
+    };
+
+    const cfg2: EventConfig = {
+      title: 'Write Rust',
+      beginDate: [2022, 9, 7, 8],
+      endDate: new Date(),
+    };
+
+    const evt1 = new Event(cfg1);
+    const evt2 = new Event(cfg2);
+
+    const calendar = new Calendar([evt1, evt2]);
+
+    console.log(calendar.toString());
   },
 });
