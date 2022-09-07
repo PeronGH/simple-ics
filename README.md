@@ -7,7 +7,7 @@ import {
   Event,
   EventConfig,
   Calendar,
-} from 'https://deno.land/x/simple_ics@0.0.4/mod.ts';
+} from 'https://deno.land/x/simple_ics@0.0.6/mod.ts';
 
 const cfg1: EventConfig = {
   title: 'Write typescript',
