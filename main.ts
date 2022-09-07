@@ -67,7 +67,7 @@ export class Calendar {
   }
 }
 
-interface EventConfig {
+export interface EventConfig {
   title: string;
   beginDate: DateData;
   endDate?: DateData;
