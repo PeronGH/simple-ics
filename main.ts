@@ -41,12 +41,10 @@ export class Event {
     const uid = crypto.randomUUID();
     const { title } = this.config;
 
-    const now = new Date();
-
     return [
       eventBegin,
       ['UID', uid],
-      ['DTSTAMP', parseDate(now)],
+      ['DTSTAMP', parseDate(new Date())],
       ['DTSTART', parseDate(this.config.beginDate)],
       ['DTEND', parseDate(this.config.endDate!)],
       ['SUMMARY', title],
