@@ -10,10 +10,10 @@ import {
 } from 'https://deno.land/x/simple_ics@0.0.3/mod.ts';
 
 const cfg1: EventConfig = {
-      title: 'Write Typescript',
-      beginDate: [2022, 9, 6, 9, 30],
-      endDate: [2022, 9, 6, 10],
-    };
+  title: 'Write Typescript',
+  beginDate: [2022, 9, 6, 9, 30],
+  endDate: [2022, 9, 6, 10],
+};
 
 const cfg2: EventConfig = {
   title: 'Write Rust',
