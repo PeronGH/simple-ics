@@ -17,12 +17,20 @@ const eventEnd = 'END:VEVENT';
 export class Event {
   constructor(protected config: EventConfig) {
     if (config.duration !== undefined) {
+      // Duration is provided
       if (!(config.beginDate instanceof Date)) {
+        // Convert beginDate to Date object
         config.beginDate = Date.constructor.apply(null, config.beginDate);
       }
+      // Calculate endDate
       const endStamp =
         (config.beginDate.valueOf() as number) + config.duration * 1e3;
       config.endDate = new Date(endStamp);
+    } else if (config.endDate === undefined) {
+      // Neither duration nor endDate is provided
+      throw new TypeError(
+        'Invalid Event Config, either duration or endDate should be provided'
+      );
     }
   }
 
