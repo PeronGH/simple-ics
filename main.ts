@@ -39,9 +39,9 @@ export class Event {
 
   toLines(): ContentLine[] {
     const uid = crypto.randomUUID();
-    const { title, desc, rrule } = this.config;
+    const { title, desc, rrule, alarm } = this.config;
 
-    return [
+    const result = [
       eventBegin,
       ['UID', uid],
       ['DTSTAMP', parseDate(new Date())],
@@ -50,8 +50,11 @@ export class Event {
       ['SUMMARY', title],
       ['DESCRIPTION', desc],
       ['RRULE', parseRRule(rrule)],
+      ...parseAlarm(alarm),
       eventEnd,
     ].filter(line => line[1] !== undefined) as ContentLine[];
+
+    return result;
   }
 }
 
@@ -76,4 +79,24 @@ export interface EventConfig {
   duration?: number;
   desc?: string;
   rrule?: RecurrenceRule;
+  alarm?: AlarmConfig;
+}
+
+export interface AlarmConfig {
+  advance: number; // In minutes
+  desc: string;
+}
+
+export function parseAlarm(
+  config?: AlarmConfig
+): ContentLine[] | [[string, undefined]] {
+  if (config === undefined) return [['VALARM', undefined]];
+
+  return [
+    ['BEGIN', 'VALARM'],
+    ['TRIGGER', `-PT${config.advance}M`],
+    ['ACTION', 'DISPLAY'],
+    ['DESCRIPTION', config.desc],
+    ['END', 'VALARM'],
+  ];
 }
