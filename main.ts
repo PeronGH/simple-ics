@@ -15,7 +15,16 @@ const eventBegin = 'BEGIN:VEVENT';
 const eventEnd = 'END:VEVENT';
 
 export class Event {
-  constructor(protected config: EventConfig) {}
+  constructor(protected config: EventConfig) {
+    if (config.duration !== undefined) {
+      if (!(config.beginDate instanceof Date)) {
+        config.beginDate = Date.constructor.apply(null, config.beginDate);
+      }
+      const endStamp =
+        (config.beginDate.valueOf() as number) + config.duration * 1e3;
+      config.endDate = new Date(endStamp);
+    }
+  }
 
   public toString() {
     const uid = crypto.randomUUID();
@@ -27,7 +36,7 @@ export class Event {
 UID:${uid}
 DTSTAMP:${parseDate(now)}
 DTSTART:${parseDate(this.config.beginDate)}
-DTEND:${parseDate(this.config.endDate)}
+DTEND:${parseDate(this.config.endDate!)}
 SUMMARY:${title}
 ${eventEnd}`;
   }
@@ -45,8 +54,9 @@ ${calendarEnd}`;
   }
 }
 
-export interface EventConfig {
+interface EventConfig {
   title: string;
   beginDate: DateData;
-  endDate: DateData;
+  endDate?: DateData;
+  duration?: number;
 }

@@ -40,8 +40,8 @@ Deno.test({
 
     const cfg2: EventConfig = {
       title: 'Write Rust',
-      beginDate: [2022, 9, 7, 8],
-      endDate: new Date(),
+      beginDate: new Date(),
+      duration: 3600, // Duration: 3600s, or 1h
     };
 
     const evt1 = new Event(cfg1);

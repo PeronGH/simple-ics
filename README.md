@@ -7,18 +7,18 @@ import {
   Event,
   EventConfig,
   Calendar,
-} from 'https://deno.land/x/simple_ics@0.0.3/mod.ts';
+} from 'https://deno.land/x/simple_ics@0.0.4/mod.ts';
 
 const cfg1: EventConfig = {
-  title: 'Write Typescript',
+  title: 'Write typescript',
   beginDate: [2022, 9, 6, 9, 30],
   endDate: [2022, 9, 6, 10],
 };
 
 const cfg2: EventConfig = {
   title: 'Write Rust',
-  beginDate: [2022, 9, 7, 8],
-  endDate: new Date(),
+  beginDate: new Date(),
+  duration: 3600, // Duration: 3600s, or 1h
 };
 
 const evt1 = new Event(cfg1);
