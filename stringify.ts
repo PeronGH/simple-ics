@@ -1,4 +1,4 @@
-export type ContentLine = [string, string];
+export type ContentLine = [string, string?];
 
 function stringifyLine(line: ContentLine) {
   // TODO: Handle lines longer than 75 bytes
@@ -6,5 +6,8 @@ function stringifyLine(line: ContentLine) {
 }
 
 export function stringifyLines(lines: ContentLine[]) {
-  return lines.map(stringifyLine).join('\r\n');
+  return lines
+    .filter(line => line[1] !== undefined)
+    .map(stringifyLine)
+    .join('\r\n');
 }

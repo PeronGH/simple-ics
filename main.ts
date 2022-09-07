@@ -41,10 +41,6 @@ export class Event {
     const uid = crypto.randomUUID();
     const { title, description } = this.config;
 
-    // Optional lines
-    const optLines: ContentLine[] = [];
-    if (description) optLines.push(['DESCRIPTION', description]);
-
     return [
       eventBegin,
       ['UID', uid],
@@ -52,7 +48,7 @@ export class Event {
       ['DTSTART', parseDate(this.config.beginDate)],
       ['DTEND', parseDate(this.config.endDate!)],
       ['SUMMARY', title],
-      ...optLines,
+      ['DESCRIPTION', description],
       eventEnd,
     ];
   }
