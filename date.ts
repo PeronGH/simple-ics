@@ -16,6 +16,7 @@ type DateArray = number[];
 export type DateData = DateArray | Date;
 
 // The following code is copied from https://github.com/adamgibbons/ics/blob/master/src/utils/format-date.js
+// Tiny modification is done to make it compatible with typescript
 
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
