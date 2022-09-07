@@ -7,6 +7,7 @@ Deno.test({
       title: 'test',
       beginDate: [2022, 8, 1, 10, 10],
       endDate: [2022, 8, 1, 11, 10],
+      description: 'Hello',
     };
     const evt = new Event(cfg);
 
@@ -33,9 +34,10 @@ Deno.test({
   name: 'doc',
   fn() {
     const cfg1: EventConfig = {
-      title: 'Write typescript',
+      title: 'Write Typescript',
       beginDate: [2022, 9, 6, 9, 30],
       endDate: [2022, 9, 6, 10],
+      description: 'Implement a module to generate .ics files',
     };
 
     const cfg2: EventConfig = {

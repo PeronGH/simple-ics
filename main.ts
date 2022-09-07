@@ -37,9 +37,13 @@ export class Event {
     }
   }
 
-  public toLines(): ContentLine[] {
+  toLines(): ContentLine[] {
     const uid = crypto.randomUUID();
-    const { title } = this.config;
+    const { title, description } = this.config;
+
+    // Optional lines
+    const optLines: ContentLine[] = [];
+    if (description) optLines.push(['DESCRIPTION', description]);
 
     return [
       eventBegin,
@@ -48,6 +52,7 @@ export class Event {
       ['DTSTART', parseDate(this.config.beginDate)],
       ['DTEND', parseDate(this.config.endDate!)],
       ['SUMMARY', title],
+      ...optLines,
       eventEnd,
     ];
   }
@@ -72,4 +77,5 @@ export interface EventConfig {
   beginDate: DateData;
   endDate?: DateData;
   duration?: number;
+  description?: string;
 }

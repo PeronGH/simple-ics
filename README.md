@@ -7,12 +7,13 @@ import {
   Event,
   EventConfig,
   Calendar,
-} from 'https://deno.land/x/simple_ics@0.0.6/mod.ts';
+} from 'https://deno.land/x/simple_ics@0.0.7/mod.ts';
 
 const cfg1: EventConfig = {
-  title: 'Write typescript',
+  title: 'Write Typescript',
   beginDate: [2022, 9, 6, 9, 30],
   endDate: [2022, 9, 6, 10],
+  description: 'Implement a module to generate .ics files',
 };
 
 const cfg2: EventConfig = {
