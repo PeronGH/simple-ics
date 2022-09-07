@@ -1,5 +1,5 @@
 import { crypto } from 'https://deno.land/std@0.154.0/crypto/mod.ts';
-import parseDate from 'https://raw.githubusercontent.com/adamgibbons/ics/master/src/utils/format-date.js';
+import formatDate from 'https://raw.githubusercontent.com/adamgibbons/ics/master/src/utils/format-date.js';
 
 const calendarBegin = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -32,20 +32,12 @@ export class Event {
 
     return `${eventBegin}
 UID:${uid}
-DTSTAMP:${parseDate(nowDateArray)}
-DTSTART:${parseDate(this.config.beginDate)}
-DTEND:${parseDate(this.config.endDate)}
+DTSTAMP:${formatDate(nowDateArray)}
+DTSTART:${formatDate(this.config.beginDate)}
+DTEND:${formatDate(this.config.endDate)}
 SUMMARY:${title}
 ${eventEnd}`;
   }
-}
-
-type DateArray = number[];
-
-export interface EventConfig {
-  title: string;
-  beginDate: DateArray;
-  endDate: DateArray;
 }
 
 export class Calendar {
@@ -58,4 +50,12 @@ export class Calendar {
 ${eventText}
 ${calendarEnd}`;
   }
+}
+
+type DateArray = number[];
+
+export interface EventConfig {
+  title: string;
+  beginDate: DateArray;
+  endDate: DateArray;
 }
