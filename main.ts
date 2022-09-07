@@ -1,7 +1,7 @@
 import { crypto } from 'https://deno.land/std@0.154.0/crypto/mod.ts';
-import parseDate from './date.ts';
-import { DateData } from './date.ts';
+import { parseDate, DateData } from './date.ts';
 import { ContentLine, stringifyLines } from './stringify.ts';
+import { parseRRule, RecurrenceRule } from './rrule.ts';
 
 const calendarBegin: ContentLine = ['BEGIN', 'VCALENDAR'];
 
@@ -39,7 +39,7 @@ export class Event {
 
   toLines(): ContentLine[] {
     const uid = crypto.randomUUID();
-    const { title, description } = this.config;
+    const { title, desc, rrule } = this.config;
 
     return [
       eventBegin,
@@ -48,7 +48,8 @@ export class Event {
       ['DTSTART', parseDate(this.config.beginDate)],
       ['DTEND', parseDate(this.config.endDate!)],
       ['SUMMARY', title],
-      ['DESCRIPTION', description],
+      ['DESCRIPTION', desc],
+      ['RRULE', parseRRule(rrule)],
       eventEnd,
     ].filter(line => line[1] !== undefined) as ContentLine[];
   }
@@ -73,5 +74,6 @@ export interface EventConfig {
   beginDate: DateData;
   endDate?: DateData;
   duration?: number;
-  description?: string;
+  desc?: string;
+  rrule?: RecurrenceRule;
 }

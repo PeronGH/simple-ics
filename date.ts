@@ -1,4 +1,6 @@
-export default function parseDate(date: DateData) {
+export function parseDate(date: DateData | undefined) {
+  if (date === undefined) return;
+
   if (date instanceof Date) {
     date = [
       date.getFullYear(),
