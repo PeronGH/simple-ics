@@ -17,6 +17,14 @@ const eventBegin: ContentLine = ['BEGIN', 'VEVENT'];
 
 const eventEnd: ContentLine = ['END', 'VEVENT'];
 
+const parseGeo = (geo?: {lat: number, lon: number}) => {
+  return geo ? `${geo.lat};${geo.lon}` : undefined;
+}
+
+const parseOrganizer = (organizer?: {name: string, email: string}) => {
+  return organizer? `CN=${organizer.name}:mailto:${organizer.email}` : undefined
+}
+
 export class Event {
   constructor(protected config: EventConfig) {
     if (config.duration !== undefined) {
@@ -39,7 +47,7 @@ export class Event {
 
   toLines(): ContentLine[] {
     const uid = crypto.randomUUID();
-    const { title, desc, rrule, alarm } = this.config;
+    const { title, desc, rrule, alarm, location, url, organizer, geo, htmlContent } = this.config;
 
     const result = [
       eventBegin,
@@ -49,7 +57,11 @@ export class Event {
       ['DTEND', parseDate(this.config.endDate!)],
       ['SUMMARY', title],
       ['DESCRIPTION', desc],
+      ['LOCATION', location],
+      ['URL', url],
+      ['GEO', parseGeo(geo)],
       ['RRULE', parseRRule(rrule)],
+      ['ORGANIZER', parseOrganizer(organizer)],
       ...parseAlarm(alarm),
       eventEnd,
     ].filter(line => line[1] !== undefined) as ContentLine[];
@@ -80,6 +92,11 @@ export interface EventConfig {
   desc?: string;
   rrule?: RecurrenceRule;
   alarm?: AlarmConfig;
+  location?: string;
+  url?: string;
+  organizer?: { name: string; email: string; dir?: string; };
+  geo?: { lat: number; lon: number; };
+  htmlContent?: string;
 }
 
 export interface AlarmConfig {
