@@ -38,6 +38,13 @@ Deno.test({
       beginDate: [2022, 9, 6, 9, 30],
       endDate: [2022, 9, 6, 10],
       desc: 'Implement a module to generate .ics files',
+      organizer: {
+        name: 'Sam Worthington',
+        email: 'sam@dev.com'
+      },
+      url: 'https://www.google.com/',
+      location: 'ABC Tank Warehouse',
+      geo: { lat: 10.4, lon: 44.5 }
     };
 
     const cfg2: EventConfig = {
