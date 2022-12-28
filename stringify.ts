@@ -1,8 +1,11 @@
 export type ContentLine = [string, string];
 
+function foldLine(line: string) {
+  return line.match(/(.{1,75})/g)!.join('\r\n ');
+}
+
 function stringifyLine(line: ContentLine) {
-  // TODO: Handle lines longer than 75 bytes
-  return `${line[0]}:${line[1]}`;
+  return foldLine(`${line[0]}:${line[1]}`);
 }
 
 export function stringifyLines(lines: ContentLine[]) {
