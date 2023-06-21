@@ -1,5 +1,5 @@
 import { crypto } from 'https://deno.land/std@0.154.0/crypto/mod.ts';
-import { parseDate, DateData } from './date.ts';
+import { parseDate, DateData, Zone } from './date.ts';
 import { ContentLine, stringifyLines } from './stringify.ts';
 import { parseRRule, RecurrenceRule } from './rrule.ts';
 
@@ -26,7 +26,9 @@ const parseOrganizer = (organizer?: {name: string, email: string}) => {
 }
 
 export class Event {
-  constructor(protected config: EventConfig) {
+  zone: Zone = 'local'
+  constructor (protected config: EventConfig) {
+    if (config.zone) this.zone = config.zone
     if (config.duration !== undefined) {
       // Duration is provided
       if (!(config.beginDate instanceof Date)) {
@@ -52,9 +54,9 @@ export class Event {
     const result = [
       eventBegin,
       ['UID', uid],
-      ['DTSTAMP', parseDate(new Date())],
-      ['DTSTART', parseDate(this.config.beginDate)],
-      ['DTEND', parseDate(this.config.endDate!)],
+      ['DTSTAMP', parseDate(new Date(), "gmt")],
+      ['DTSTART', parseDate(this.config.beginDate, this.zone)],
+      ['DTEND', parseDate(this.config.endDate!, this.zone)],
       ['SUMMARY', title],
       ['DESCRIPTION', desc],
       ['LOCATION', location],
@@ -97,6 +99,7 @@ export interface EventConfig {
   organizer?: { name: string; email: string; dir?: string; };
   geo?: { lat: number; lon: number; };
   htmlContent?: string;
+  zone?: Zone // default to local 
 }
 
 export interface AlarmConfig {

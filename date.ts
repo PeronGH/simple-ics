@@ -1,4 +1,18 @@
-export function parseDate(date: DateData | undefined) {
+export type Zone = "local" | "gmt";
+
+export const short_utc = (utc_ts: number) =>{
+  const utc = new Date(utc_ts),
+    fmt = utc.toJSON()
+      .replaceAll(":", "")
+      .replaceAll("-", "")
+      .slice(0, 15)
+  return `${fmt}Z`
+}
+
+export function parseDate(
+  date: DateData | undefined,
+  zone: Zone = "local",
+) {
   if (date === undefined) return;
 
   if (date instanceof Date) {
@@ -11,7 +25,7 @@ export function parseDate(date: DateData | undefined) {
       date.getSeconds(),
     ];
   }
-  return formatDate(date);
+  return formatDate(date, zone);
 }
 
 type DateArray = number[];
@@ -24,8 +38,7 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 function formatDate(
   args: number[] = [],
-  outputType = 'local',
-  inputType = 'local'
+  zone: Zone = "local",
 ) {
   if (Array.isArray(args) && args.length === 3) {
     const [year, month, date] = args;
@@ -35,35 +48,23 @@ function formatDate(
   let outDate = new Date(new Date().setUTCSeconds(0, 0));
   if (Array.isArray(args) && args.length > 0 && args[0]) {
     const [year, month, date, hours = 0, minutes = 0, seconds = 0] = args;
-    if (inputType === 'local') {
+    if (zone === "local") {
       outDate = new Date(year, month - 1, date, hours, minutes, seconds);
     } else {
       outDate = new Date(
-        Date.UTC(year, month - 1, date, hours, minutes, seconds)
+        Date.UTC(year, month - 1, date, hours, minutes, seconds),
       );
     }
   }
 
-  if (outputType === 'local') {
-    return [
-      outDate.getFullYear(),
-      pad(outDate.getMonth() + 1),
-      pad(outDate.getDate()),
-      'T',
-      pad(outDate.getHours()),
-      pad(outDate.getMinutes()),
-      pad(outDate.getSeconds()),
-    ].join('');
+  if (zone === "local") {
+    const year = outDate.getFullYear(),
+      month = outDate.getMonth() + 1,
+      day = outDate.getDate(),
+      hour = outDate.getHours(),
+      minute = outDate.getMinutes(),
+      second = outDate.getSeconds();
+    return `${(year)}${pad(month)}${pad(day)}T${pad(hour)}${pad(minute)}${pad(second)}`;
   }
-
-  return [
-    outDate.getUTCFullYear(),
-    pad(outDate.getUTCMonth() + 1),
-    pad(outDate.getUTCDate()),
-    'T',
-    pad(outDate.getUTCHours()),
-    pad(outDate.getUTCMinutes()),
-    pad(outDate.getUTCSeconds()),
-    'Z',
-  ].join('');
+    return short_utc(outDate.valueOf());
 }
