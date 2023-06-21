@@ -10,16 +10,14 @@ Deno.test('UTC event',
       beginDate: [2022, 8, 1, 10, 10],
       endDate: [2022, 8, 1, 11, 10],
       desc: 'Hello',
-      zone: 'gmt' // Universal time
+      zone: 'gmt' // Universal time required
     };
     const evt = new Event(cfg);
     const lines = evt.toLines()
-    console.log(lines);
     assertEquals(lines[0][0], "BEGIN")
     assertEquals(lines[0][1], "VEVENT")
 
     // Note 'Z' suffix for GMT (precaution against daylight saving time surprises)
-    const utc_start = new Date(Date.UTC(2022, 7, 1, 10, 10)) // August
     assertEquals(lines[3], ["DTSTART", "20220801T101000Z"])
     assertEquals(lines[4], ["DTEND", "20220801T111000Z"]) 
 
