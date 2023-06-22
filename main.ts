@@ -54,7 +54,7 @@ export class Event {
     const result = [
       eventBegin,
       ['UID', uid],
-      ['DTSTAMP', parseDate(new Date(), "gmt")],
+      ['DTSTAMP', parseDate(new Date(), "utc")],
       ['DTSTART', parseDate(this.config.beginDate, this.zone)],
       ['DTEND', parseDate(this.config.endDate!, this.zone)],
       ['SUMMARY', title],

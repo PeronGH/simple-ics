@@ -1,4 +1,4 @@
-export type Zone = "local" | "gmt";
+export type Zone = "local" | "utc";
 
 export const short_utc = (utc_ts: number) =>{
   const utc = new Date(utc_ts),
