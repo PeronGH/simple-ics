@@ -1,19 +1,28 @@
-import { Event, EventConfig, Calendar } from './mod.ts';
+import { assertEquals } from 'https://deno.land/std@0.154.0/testing/asserts.ts';
 
-Deno.test({
-  name: 'event',
-  fn() {
+import { Event, EventConfig, Calendar } from './mod.ts';
+import { short_utc } from './date.ts';
+
+Deno.test('UTC event',
+  () => {
     const cfg: EventConfig = {
       title: 'test',
       beginDate: [2022, 8, 1, 10, 10],
       endDate: [2022, 8, 1, 11, 10],
       desc: 'Hello',
+      zone: 'gmt' // Universal time required
     };
     const evt = new Event(cfg);
+    const lines = evt.toLines()
+    assertEquals(lines[0][0], "BEGIN")
+    assertEquals(lines[0][1], "VEVENT")
 
-    console.log(evt.toLines());
+    // Note 'Z' suffix for GMT (precaution against daylight saving time surprises)
+    assertEquals(lines[3], ["DTSTART", "20220801T101000Z"])
+    assertEquals(lines[4], ["DTEND", "20220801T111000Z"]) 
+
   },
-});
+);
 
 Deno.test({
   name: 'calendar',
