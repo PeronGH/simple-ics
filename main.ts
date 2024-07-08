@@ -17,18 +17,20 @@ const eventBegin: ContentLine = ['BEGIN', 'VEVENT'];
 
 const eventEnd: ContentLine = ['END', 'VEVENT'];
 
-const parseGeo = (geo?: {lat: number, lon: number}) => {
+const parseGeo = (geo?: { lat: number; lon: number }) => {
   return geo ? `${geo.lat};${geo.lon}` : undefined;
-}
+};
 
-const parseOrganizer = (organizer?: {name: string, email: string}) => {
-  return organizer? `CN=${organizer.name}:mailto:${organizer.email}` : undefined
-}
+const parseOrganizer = (organizer?: { name: string; email: string }) => {
+  return organizer
+    ? `CN=${organizer.name}:mailto:${organizer.email}`
+    : undefined;
+};
 
 export class Event {
-  zone: Zone = 'local'
-  constructor (protected config: EventConfig) {
-    if (config.zone) this.zone = config.zone
+  zone: Zone = 'local';
+  constructor(protected config: EventConfig) {
+    if (config.zone) this.zone = config.zone;
     if (config.duration !== undefined) {
       // Duration is provided
       if (!(config.beginDate instanceof Date)) {
@@ -48,13 +50,24 @@ export class Event {
   }
 
   toLines(): ContentLine[] {
-    const uid = crypto.randomUUID();
-    const { title, desc, rrule, alarm, location, url, organizer, geo, htmlContent } = this.config;
+    const {
+      customId,
+      title,
+      desc,
+      rrule,
+      alarm,
+      location,
+      url,
+      organizer,
+      geo,
+      htmlContent,
+    } = this.config;
+    const uid = customId ?? crypto.randomUUID();
 
     const result = [
       eventBegin,
       ['UID', uid],
-      ['DTSTAMP', parseDate(new Date(), "utc")],
+      ['DTSTAMP', parseDate(new Date(), 'utc')],
       ['DTSTART', parseDate(this.config.beginDate, this.zone)],
       ['DTEND', parseDate(this.config.endDate!, this.zone)],
       ['SUMMARY', title],
@@ -66,9 +79,13 @@ export class Event {
       ['ORGANIZER', parseOrganizer(organizer)],
       ...parseAlarm(alarm),
       eventEnd,
-    ].filter(line => line[1] !== undefined) as ContentLine[];
+    ].filter((line) => line[1] !== undefined) as ContentLine[];
 
     return result;
+  }
+
+  toString() {
+    return stringifyLines(this.toLines());
   }
 }
 
@@ -76,7 +93,7 @@ export class Calendar {
   constructor(protected events: Event[]) {}
 
   toLines(): ContentLine[] {
-    const eventLines = this.events.map(evt => evt.toLines()).flat();
+    const eventLines = this.events.map((evt) => evt.toLines()).flat();
 
     return [calendarBegin, ...calendarProps, ...eventLines, calendarEnd];
   }
@@ -87,6 +104,7 @@ export class Calendar {
 }
 
 export interface EventConfig {
+  customId?: string;
   title: string;
   beginDate: DateData;
   endDate?: DateData;
@@ -96,10 +114,10 @@ export interface EventConfig {
   alarm?: AlarmConfig;
   location?: string;
   url?: string;
-  organizer?: { name: string; email: string; dir?: string; };
-  geo?: { lat: number; lon: number; };
+  organizer?: { name: string; email: string; dir?: string };
+  geo?: { lat: number; lon: number };
   htmlContent?: string;
-  zone?: Zone // default to local 
+  zone?: Zone; // default to local
 }
 
 export interface AlarmConfig {
